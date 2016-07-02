@@ -1,3 +1,5 @@
+extern crate rand;
+
 use cell::Cell;
 
 pub struct World {
@@ -12,12 +14,11 @@ pub fn create_world(width: i16, height: i16) -> World {
     for _ in 0..height {
         let mut row = Vec::new();
 
-        for j in 0..width {
+        for _ in 0..width {
             row.push(
-                if j % 2 == 0 {
-                    Cell::Alive
-                } else {
-                    Cell::Dead
+                match rand::random::<i8>() {
+                    0 ... 48 => Cell::Alive,
+                    _        => Cell::Dead
                 }
             );
         }

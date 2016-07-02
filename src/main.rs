@@ -11,9 +11,9 @@ mod world;
 mod cell;
 
 
-static SIZE:  f32 = 0.025;
-static DEPTH: f32 = 0.0025;
-static GAP:   f32 = 0.0275;
+static SIZE:  f32 = 0.0125;
+static DEPTH: f32 = 0.00125;
+static GAP:   f32 = 0.01275;
 
 
 fn build_tiles(window: &mut Window, tiles: &mut Vec<SceneNode>, world: &world::World) {
@@ -27,8 +27,8 @@ fn build_tiles(window: &mut Window, tiles: &mut Vec<SceneNode>, world: &world::W
 
                     tile.set_color(1.0, 0.0, 0.0);
                     tile.append_translation(&Vector3::new(
-                        (x as f32) * GAP,
-                        (y as f32) * GAP,
+                        ((x - world.width / 2) as f32) * GAP,
+                        ((y - world.height / 2) as f32) * GAP,
                         0.0
                     ));
 
@@ -49,7 +49,7 @@ fn destroy_tiles(window: &mut Window, tiles: &mut Vec<SceneNode>) {
 }
 
 fn main() {
-    let mut world = world::create_world(128, 64);
+    let mut world = world::create_world(128, 128);
     let mut window = Window::new("Game of Life: 2d");
 
     window.set_light(Light::StickToCamera);

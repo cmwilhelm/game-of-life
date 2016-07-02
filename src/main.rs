@@ -49,7 +49,7 @@ fn destroy_tiles(window: &mut Window, tiles: &mut Vec<SceneNode>) {
 }
 
 fn main() {
-    let mut world = world::create_world(64, 36);
+    let mut world = world::create_world(128, 64);
     let mut window = Window::new("Game of Life: 2d");
 
     window.set_light(Light::StickToCamera);

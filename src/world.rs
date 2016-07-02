@@ -1,12 +1,12 @@
 use cell::Cell;
 
 pub struct World {
-    pub width:  i8,
-    pub height: i8,
+    pub width:  i16,
+    pub height: i16,
     pub cells:  Vec<Vec<Cell>>
 }
 
-pub fn create_world(width: i8, height: i8) -> World {
+pub fn create_world(width: i16, height: i16) -> World {
     let mut rows = Vec::new();
 
     for _ in 0..height {
@@ -45,7 +45,7 @@ pub fn next_world(world: &World) -> World {
     World { width: world.width, height: world.height, cells: rows }
 }
 
-fn next_cell_state(world: &World, x: i8, y: i8) -> Cell {
+fn next_cell_state(world: &World, x: i16, y: i16) -> Cell {
     let ref cell      = world.cells[y as usize][x as usize];
     let num_neighbors = count_neighbors(&world, x, y);
 
@@ -56,7 +56,7 @@ fn next_cell_state(world: &World, x: i8, y: i8) -> Cell {
     }
 }
 
-fn count_neighbors(world: &World, x: i8, y: i8) -> i8 {
+fn count_neighbors(world: &World, x: i16, y: i16) -> i16 {
     let mut count = 0;
 
     let positions = vec![

@@ -9,39 +9,24 @@ pub struct World {
 }
 
 pub fn create_world(width: i16, height: i16) -> World {
-    let mut rows = Vec::new();
-
-    for _ in 0..height {
-        let mut row = Vec::new();
-
-        for _ in 0..width {
-            row.push(
-                match rand::random::<i8>() {
-                    0 ... 48 => Cell::Alive,
-                    _        => Cell::Dead
-                }
-            );
-        }
-
-        rows.push(row);
-    }
+    let rows = (0..height).map(|_| {
+        (0..width).map(|_| {
+            match rand::random::<i8>() {
+                0 ... 48 => Cell::Alive,
+                _        => Cell::Dead
+            }
+        }).collect()
+    }).collect();
 
     World { width: width, height: height, cells: rows }
 }
 
 pub fn next_world(world: &World) -> World {
-    let mut rows = Vec::new();
-
-    for y in 0..world.height {
-        let mut row = Vec::new();
-
-        for x in 0..world.width {
-            let next: Cell = next_cell_state(&world, x, y);
-            row.push(next);
-        }
-
-        rows.push(row);
-    }
+    let rows = (0..world.height).map(|y| {
+        (0..world.width)
+            .map(|x| next_cell_state(&world, x, y) )
+            .collect()
+    }).collect();
 
     World { width: world.width, height: world.height, cells: rows }
 }
@@ -58,9 +43,7 @@ fn next_cell_state(world: &World, x: i16, y: i16) -> Cell {
 }
 
 fn count_neighbors(world: &World, x: i16, y: i16) -> i16 {
-    let mut count = 0;
-
-    let positions = vec![
+    let neighbors = vec![
         (x-1, y-1),
         (x,   y-1),
         (x+1, y-1),
@@ -71,16 +54,16 @@ fn count_neighbors(world: &World, x: i16, y: i16) -> i16 {
         (x+1, y+1)
     ];
 
-    for (x, y) in positions {
+    neighbors.iter().fold(0, |mut acc, &(x, y)| {
         if x >= 0 && x < world.width && y >= 0 && y < world.height {
             let ref cell = world.cells[y as usize][x as usize];
 
-            count += match cell {
+            acc += match cell {
                 &Cell::Alive => 1,
                 &Cell::Dead  => 0
             }
         }
-    }
 
-    count
+        acc
+    })
 }
